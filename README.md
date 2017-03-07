@@ -1,6 +1,6 @@
-# opsdroid skill hello
+# opsdroid skill travis
 
-A skill for [opsdroid](https://github.com/opsdroid/opsdroid) to respond to hello and goodbye messages.
+A skill for [opsdroid](https://github.com/opsdroid/opsdroid) to notify on travis builds.
 
 ## Requirements
 
@@ -8,25 +8,22 @@ None.
 
 ## Configuration
 
-None.
+```yaml
+skills:
+  - name: travis
+    room: "#monitoring"  # (Optional) room to send alert to
+```
 
 ## Usage
 
-#### `hello`
+[Configure a webhook](https://docs.travis-ci.com/user/notifications/#Configuring-webhook-notifications) in your travis.yml which points to your opsdroid webhook.
 
-Says hello to the user.
-
-> user: hello
->
-> opsdroid: Hi user
-
-#### `goodbye`
-
-Says goodbye to the user.
-
-> user: bye
->
-> opsdroid: Bye user
+```yaml
+notifications:
+  webhooks:
+    urls:
+      - http://example.com/skill/travis/event
+```
 
 ## License
 

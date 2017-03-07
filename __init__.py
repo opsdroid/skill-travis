@@ -1,16 +1,24 @@
-from opsdroid.matchers import match_regex
-import logging
-import random
+from aiohttp.web import Request
 
-def setup(opsdroid):
-    logging.debug("Loaded hello module")
+from opsdroid.matchers import match_webhook
+from opsdroid.message import Message
 
-@match_regex(r'hi|hello|hey|hallo')
-async def hello(opsdroid, config, message):
-    text = random.choice(["Hi {}", "Hello {}", "Hey {}"]).format(message.user)
-    await message.respond(text)
+@match_webhook("event")
+async def event(opsdroid, config, message):
+    if type(message) is not Message and type(message) is Request:
+        # Capture the request POST data and set message to a default message
+        request = await message.post()
+        message = Message("",
+                          None,
+                          config.get("room", opsdroid.default_connector.default_room),
+                          opsdroid.default_connector)
 
-@match_regex(r'bye( bye)?|see y(a|ou)|au revoir|gtg|I(\')?m off')
-async def goodbye(opsdroid, config, message):
-    text = random.choice(["Bye {}", "See you {}", "Au revoir {}"]).format(message.user)
-    await message.respond(text)
+        payload = request["payload"]
+
+        # Respond
+        await message.respond("Build {} of {}/{} has {}".format(
+            payload["number"],
+            payload["repository"]["owner_name"],
+            payload["repository"]["name"],
+            payload["status_message"].lower()))
+        await message.respond(payload["build_url"])
