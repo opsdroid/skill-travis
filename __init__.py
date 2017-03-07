@@ -7,7 +7,7 @@ from opsdroid.message import Message
 async def event(opsdroid, config, message):
     if type(message) is not Message and type(message) is Request:
         # Capture the request POST data and set message to a default message
-        request = await message.post()
+        request = await message.json()
         message = Message("",
                           None,
                           config.get("room", opsdroid.default_connector.default_room),
@@ -16,7 +16,7 @@ async def event(opsdroid, config, message):
         payload = request["payload"]
 
         # Respond
-        await message.respond("Build {} of {}/{} has {}".format(
+        await message.respond("Build {} of {}/{} has {}.".format(
             payload["number"],
             payload["repository"]["owner_name"],
             payload["repository"]["name"],
