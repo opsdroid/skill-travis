@@ -7,7 +7,7 @@ from opsdroid.message import Message
 async def event(opsdroid, config, message):
     if type(message) is not Message and type(message) is Request:
         # Capture the request POST data and set message to a default message
-        request = await message.json()
+        request = await message.post()
         message = Message("",
                           None,
                           config.get("room", opsdroid.default_connector.default_room),
