@@ -3,6 +3,10 @@ from aiohttp.web import Request
 from opsdroid.matchers import match_webhook
 from opsdroid.message import Message
 
+
+_LOGGER = logging.getLogger(__name__)
+
+
 @match_webhook("event")
 async def event(opsdroid, config, message):
     if type(message) is not Message and type(message) is Request:
@@ -14,6 +18,7 @@ async def event(opsdroid, config, message):
                           opsdroid.default_connector)
 
         payload = request["payload"]
+        _LOGGER.debug(payload)
 
         # Respond
         await message.respond("Build {} of {}/{} has {}.".format(
