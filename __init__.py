@@ -1,4 +1,5 @@
 import logging
+import json
 
 from aiohttp.web import Request
 
@@ -13,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 async def event(opsdroid, config, message):
     if type(message) is not Message and type(message) is Request:
         # Capture the request POST data and set message to a default message
-        request = await message.post()
+        request = json.loads(await message.post())
         message = Message("",
                           None,
                           config.get("room", opsdroid.default_connector.default_room),
