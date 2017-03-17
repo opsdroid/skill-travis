@@ -1,3 +1,5 @@
+import logging
+
 from aiohttp.web import Request
 
 from opsdroid.matchers import match_webhook
