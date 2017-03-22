@@ -12,6 +12,7 @@ None.
 skills:
   - name: travis
     room: "#monitoring"  # (Optional) room to send alert to
+    travis_endpoint: "org"  # (Optional) endpoint for travis, change to "com" if using enterprise Travis CI
 ```
 
 ## Usage
